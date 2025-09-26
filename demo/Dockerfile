@@ -6,7 +6,7 @@ FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 
 # Copiar los archivos de configuración y código fuente
-COPY . .
+COPY demo/ .
 
 # Dar permisos de ejecución al Maven Wrapper
 RUN chmod +x ./mvnw
