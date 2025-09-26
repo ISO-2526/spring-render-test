@@ -6,10 +6,13 @@ FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 
 # Copiar los archivos de configuración y código fuente
-COPY demo/* .
+COPY . .
 
-# Construir la aplicación (Maven)
-RUN mvn clean package -DskipTests
+# Dar permisos de ejecución al Maven Wrapper
+RUN chmod +x ./mvnw
+
+# Construir la aplicación usando Maven Wrapper
+RUN ./mvnw clean package -DskipTests
 
 # Fase 2: Ejecución de la aplicación
 # Usamos una imagen base de Eclipse Temurin con JRE 21
