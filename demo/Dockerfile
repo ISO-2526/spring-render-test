@@ -1,27 +1,15 @@
-# Fase 1: Construcción de la aplicación
+# Fase 1: Contrucción de la aplicación
 # Usamos una imagen base de Eclipse Temurin con JDK 21 y Maven
 FROM eclipse-temurin:21-jdk AS build
 
-# Instalar Maven
-RUN apt-get update && apt-get install -y maven
-
-# Indicar el directorio de trabajo
+# indicar el directorio de trabajo
 WORKDIR /app
 
-# Copiar los archivos de configuración de Maven primero (para aprovechar cache de Docker)
-COPY pom.xml .
-COPY mvnw .
-COPY mvnw.cmd .
-COPY .mvn .mvn
+# Copiar los archivos de configuración y código fuente
+COPY demo/* .
 
-# Descargar dependencias (esto se cachea si pom.xml no cambia)
-RUN ./mvnw dependency:go-offline
-
-# Copiar el código fuente
-COPY src src
-
-# Construir la aplicación
-RUN ./mvnw clean package -DskipTests
+# Construir la aplicación (Maven)
+RUN mvn clean package -DskipTests
 
 # Fase 2: Ejecución de la aplicación
 # Usamos una imagen base de Eclipse Temurin con JRE 21
